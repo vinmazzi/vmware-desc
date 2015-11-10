@@ -1,0 +1,1 @@
+Alterar descrição das máquinas no vmware sob-demanda, utilizando um arquivo .csv com o seguinte formado: Máquina,descricao.
