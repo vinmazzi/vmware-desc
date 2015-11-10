@@ -2,15 +2,15 @@ require 'rbvmomi'
 
 class Connection
 	def initialize
-		@con = undef
+		@con = nil 
 	end
 
 	def set_con(host, user, password)
-		con = RbVmomi::VIM.connect(host: host,insecure: true,user: "#{user}@brasil.latam.cea",password: password)
+		@con = RbVmomi::VIM.connect(host: host,insecure: true,user: "#{user}@brasil.latam.cea",password: password)
 	end
 
 	def get_con
-		con
+		@con
 	end
 end
 
@@ -42,9 +42,10 @@ class Description
 		vm = vmDef.get_vm
 		conf = RbVmomi::VIM.VirtualMachineConfigSpec(:annotation => desc)
 		if(vm)
+			puts("Configurando #{vm.name} com a descrição: '#{desc}'.")
 			vm.ReconfigVM_Task(:spec => conf)
 		else
-			fail("Vm não encontrada")
+			fail("Vm: #{vm.name} não encontrada\n Não foi possivel configurar a descrição '#{desc}'")
 		end
 	end
 end
@@ -56,10 +57,10 @@ file = '/tmp/nonotes'
 
 con = Connection.new
 renameVm = Description.new
-con.set_connection(host, user, password)
-connection = con.get_connection
+con.set_con(host, user, password)
+connection = con.get_con
 
-file = File.open('/tmp/nonotes','r').each do |l|
+file = File.open(file,'r').each do |l|
 	tmp = l.split(',')
 	vm = tmp[0]
 	desc = tmp[1]
