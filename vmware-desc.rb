@@ -15,12 +15,12 @@ class Connection
 end
 
 class Vm
-	def set_vm(vm)
-		@vm_def = vm
+	def vm_obj=(vm)
+		@vm = vm
 	end
 
-	def get_vm
-		@vm_def
+	def vm_obj
+		@vm
 	end
 end
 
@@ -34,12 +34,12 @@ class Description
 			        c.host.find {|h|
 					 h.vm.find {|v| 
 						 if(v.name.downcase == vm_name.downcase)
-							 vmDef.set_vm(v)
+							 vmDef.vm_obj = v
 						 end
 					 }
 			        }
 		}
-		vm = vmDef.get_vm
+		vm = vmDef.vm_obj
 		conf = RbVmomi::VIM.VirtualMachineConfigSpec(:annotation => desc)
 		if(vm)
 			puts("Configurando #{vm.name} com a descrição: '#{desc}'.")
